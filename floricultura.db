@@ -1,0 +1,46 @@
+const sqlite3 = require('sqlite3').verbose();
+
+const db = new sqlite3.Database('ecommerce_floricultura.db');
+
+// Inserindo produtos de exemplo
+const produtos = [
+    { nome: 'Rosa Vermelha', descricao: 'Uma linda rosa vermelha.', preco: 15.99 },
+    { nome: 'Lírio Branco', descricao: 'Um lírio branco e elegante.', preco: 12.99 },
+    { nome: 'Orquídea Rosa', descricao: 'Uma orquídea rosa deslumbrante.', preco: 24.99 }
+];
+
+produtos.forEach(produto => {
+    db.run(
+        'INSERT INTO produtos (nome, descricao, preco) VALUES (?, ?, ?)',
+        [produto.nome, produto.descricao, produto.preco],
+        function(err) {
+            if (err) {
+                console.error(err.message);
+            } else {
+                console.log(`Produto inserido com ID ${this.lastID}`);
+            }
+        }
+    );
+});
+
+// Inserindo pedidos de exemplo
+const pedidos = [
+    { nome_cliente: 'Maria Silva', endereco_entrega: 'Rua das Flores, 123', total: 15.99 },
+    { nome_cliente: 'João Oliveira', endereco_entrega: 'Avenida das Rosas, 456', total: 37.98 }
+];
+
+pedidos.forEach(pedido => {
+    db.run(
+        'INSERT INTO pedidos (nome_cliente, endereco_entrega, total) VALUES (?, ?, ?)',
+        [pedido.nome_cliente, pedido.endereco_entrega, pedido.total],
+        function(err) {
+            if (err) {
+                console.error(err.message);
+            } else {
+                console.log(`Pedido inserido com ID ${this.lastID}`);
+            }
+        }
+    );
+});
+
+db.close();
